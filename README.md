@@ -1,6 +1,6 @@
-# DAGP
+# AGP-dynamic
 
-**Description**: This is the implementation of DAGP
+**Description**: This is the implementation of AGP-dynamic
 
 
 ## Cmake version: 3.28.1
