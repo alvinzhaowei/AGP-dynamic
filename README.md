@@ -15,6 +15,6 @@
   
   wtype 2: geometric distribution
   
-  wtype 3: Possion distribution 
+  wtype 3: Poission distribution 
 
-An script example: ./DAGP -graph ./graphs/soc -update ./updates/r_d/soc -wtype 0 -a 0.5 -b 0.5
+A script example: ./DAGP -graph ./graphs/soc -update ./updates/r_d/soc -wtype 0 -a 0.5 -b 0.5
