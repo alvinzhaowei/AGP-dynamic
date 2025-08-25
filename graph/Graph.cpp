@@ -146,7 +146,7 @@ double *Graph::query(double *x, float a, float b, int L, double *w, double eps, 
                         auto *neighbor_v = (dynagp::Vertex *) vList[neighborID - 1];
                         r_[neighborID] = r_[neighborID] + value / pow(neighbor_v->getDegree(), a);
                     }
-                    q[j] = q[j] + w[i] * r_[j] / y[i];
+                    q[j] = q[j] + w[i] * r[j] / y[i];
                 }
             }
             for (int j = 0; j < vertex_number; j++) {
@@ -159,7 +159,7 @@ double *Graph::query(double *x, float a, float b, int L, double *w, double eps, 
             }
         }
         for (int j = 0; j < vertex_number; j++) {
-            q[j] = q[j] + w[L] * r[j] / y[L];
+            q[j] = w[L] * r[j] / y[L];
         }
 
         for (int j = 0; j < vertex_number; j++) {
@@ -204,8 +204,8 @@ double *Graph::query(double *x, float a, float b, int L, double *w, double eps, 
                             } else {
                                 //leave the budget for dynamic
                                 p = su / pow(pow(2, s - 1), b);
-//                                static
-//                                p = su / pow(pow(2, s), b);
+                                // static
+                                // p = su / pow(pow(2, s), b);
                             }
                             int bs = dsb->sizeByIndex(s);
                             if (p >= 1) {
@@ -230,7 +230,7 @@ double *Graph::query(double *x, float a, float b, int L, double *w, double eps, 
                                     double randomValue = generateRandomInt(1, 10000) / 10000.0;
                                     int z = ceil(log2(randomValue) / log2(1 - p));
                                     k = k + z;
-                                    // k < 0 when z is too large to be held and 'become' negative
+                                    // k < 0 is when z is too large to be held and 'become' negative
                                     if (k >= bs || k < 0) {
                                         break;
                                     }
@@ -248,7 +248,7 @@ double *Graph::query(double *x, float a, float b, int L, double *w, double eps, 
                         }
                     }
                 }
-                q[j] = q[j] + w[i] * r_[j] / y[i];
+                q[j] = q[j] + w[i] * r[j] / y[i];
             }
             for (int j = 0; j < vertex_number; j++) {
                 pi[j] = pi[j] + q[j];
@@ -258,15 +258,23 @@ double *Graph::query(double *x, float a, float b, int L, double *w, double eps, 
                 q[j] = 0;
                 r_[j] = 0;
             }
+
+            // for debug: check the value changes
+            // double sum = 0;
+            // for (int ii = 0; ii < vertex_number; ii++) {
+            //     sum += pi[ii];
+            // }
+            // printf("%.9lf \n", sum);
         }
 
         for (int j = 0; j < vertex_number; j++) {
-            q[j] = q[j] + w[L] * r[j] / y[L];
+            q[j] = w[L] * r[j] / y[L];
         }
 
         for (int j = 0; j < vertex_number; j++) {
             pi[j] = pi[j] + q[j];
         }
+
     }
 
     delete[] r;
@@ -274,8 +282,17 @@ double *Graph::query(double *x, float a, float b, int L, double *w, double eps, 
     delete[] q;
     delete[] y;
 
+    // for debug: check the value changes
+    // double sum = 0;
+    // for (int ii = 0; ii < vertex_number; ii++) {
+    //     sum += pi[ii];
+    // }
+    // printf("%.9lf \n", sum);
+
     double end = getCurrentTime();
     printf("query time: %.9lf\n", end - start);
+
+
     return pi;
 }
 
